@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dan Pegado | Portfolio</title>
+
+    <style>
+        /* ---------- GLOBAL ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #0d0d0d;
+            color: #ffffff;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        section {
+            padding: 90px 10%;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.3rem;
+        }
+
+        /* ---------- HEADER ---------- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #0b0b0b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10%;
+            z-index: 1000;
+            border-bottom: 1px solid #222;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #00adb5;
+        }
+
+        .menu-toggle {
+            display: none;
+        }
+
+        .menu-icon {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* ---------- ABOUT / HERO ---------- */
+        #about {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #0d0d0d, #1a1a1a);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 30px;
+        }
+
+        .about-img img {
+            width: 260px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid #00adb5;
+            box-shadow: 0 0 25px rgba(0, 173, 181, 0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .about-text h1 {
+            font-size: 3.2rem;
+        }
+
+        .about-text h3 {
+            font-size: 1.4rem;
+            color: #00adb5;
+            margin: 10px 0;
+        }
+
+        .about-text p {
+            max-width: 700px;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #dcdcdc;
+        }
+
+        /* ---------- PROJECTS ---------- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: #111;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #2a2a2a;
+            transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 173, 181, 0.35);
+            border: 1px solid #00adb5;
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .project-content {
+            padding: 20px;
+        }
+
+        .project-content h3 {
+            margin-bottom: 10px;
+        }
+
+        .project-content p {
+            color: #cfcfcf;
+            margin-bottom: 12px;
+        }
+
+        .project-content a {
+            color: #00adb5;
+            font-weight: bold;
+        }
+
+        /* ---------- CONTACT ---------- */
+        #contact {
+            background: #111;
+            border-top: 1px solid #2a2a2a;
+        }
+
+        form {
+            max-width: 500px;
+            margin: auto;
+            background: #0d0d0d;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #2a2a2a;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input, textarea {
+            padding: 12px;
+            border-radius: 6px;
+            background: #1a1a1a;
+            color: #ffffff;
+            border: 1px solid #333;
+            outline: none;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #999;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #00adb5;
+        }
+
+        button {
+            padding: 12px;
+            background: #00adb5;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #019aa2;
+        }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            background: #080808;
+            text-align: center;
+            padding: 30px 10%;
+            border-top: 1px solid #2a2a2a;
+        }
+
+        .socials a {
+            margin: 0 12px;
+            font-size: 1.2rem;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            nav {
+                position: absolute;
+                top: 60px;
+                right: 0;
+                background: #0b0b0b;
+                flex-direction: column;
+                width: 200px;
+                display: none;
+            }
+
+            .menu-toggle:checked + nav {
+                display: flex;
+            }
+
+            .menu-icon {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="logo">Dan Pegado</div>
+
+    <label for="menu" class="menu-icon">☰</label>
+    <input type="checkbox" id="menu" class="menu-toggle">
+
+    <nav>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<!-- ABOUT -->
+<section id="about">
+    <div class="about-img">
+        <img src="portfolio pfp.jpeg" alt="Profile Image">
+    </div>
+
+    <div class="about-text">
+        <h1>Dan Pegado</h1>
+        <h3>Computer Engineer | Web Developer</h3>
+        <p>
+            Passionate computer engineering student with a strong interest in web development,
+            UI design, and building real-world applications using modern technologies.
+        </p>
+    </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+    <h2>Projects</h2>
+
+    <div class="projects-grid">
+
+        <div class="project-card">
+            <img src="project1-java logo.png" alt="Restaurant App">
+            <div class="project-content">
+                <h3>Restaurant App (Java)</h3>
+                <p>A Java-based restaurant management application.</p>
+                <a href="https://github.com/">GitHub</a>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <img src="project2-python logo.png" alt="Finance Dashboard">
+            <div class="project-content">
+                <h3>Personal Finance Dashboard (Python)</h3>
+                <p>A dashboard to track expenses and savings.</p>
+                <a href="https://github.com/">GitHub</a>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <img src="project3-react logo.png" alt="Portfolio Website">
+            <div class="project-content">
+                <h3>Portfolio Website</h3>
+                <p>My first responsive portfolio website.</p>
+                <a href="#">View Project</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+    <h2>Contact Me</h2>
+
+    <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea rows="5" placeholder="Your Message"></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="socials">
+        <a href="https://github.com/">GitHub</a>
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+    </div>
+    <p>© 2024 Dan Pegado. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
