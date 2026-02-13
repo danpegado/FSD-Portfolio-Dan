@@ -187,6 +187,9 @@ header {
     background: var(--primary);
     color: #000;
     box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
 }
 .btn.primary:hover {
     box-shadow: 0 0 25px rgba(0, 243, 255, 0.8);
@@ -287,7 +290,6 @@ section {
     animation: floatChip 4s ease-in-out infinite;
 }
 
-/* Add different delays to make floating look natural */
 .tech-chip:nth-child(odd) { animation-delay: 0s; }
 .tech-chip:nth-child(even) { animation-delay: 2s; }
 .tech-chip:nth-child(3n) { animation-delay: 1s; }

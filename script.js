@@ -92,3 +92,39 @@ const navLinks = document.querySelector(".nav-links");
 hamburger.addEventListener("click", () => {
     navLinks.classList.toggle("active");
 });
+
+/* ---------------- EMAILJS INTEGRATION ---------------- */
+const contactForm = document.getElementById('contact-form');
+
+contactForm.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent page reload
+
+    // Get button to change text
+    const btn = contactForm.querySelector('button');
+    const originalText = btn.innerText;
+    btn.innerText = 'Sending...';
+
+    // Prepare parameters matching your EmailJS template variables
+    // Ensure your EmailJS template uses {{from_name}}, {{from_email}}, and {{message}}
+    const params = {
+        from_name: document.getElementById('from_name').value,
+        email_id: document.getElementById('email_id').value,
+        message: document.getElementById('message').value
+    };
+
+    const serviceID = 'service_7nnspgf';
+    const templateID = 'template_ez4yo47';
+
+    emailjs.send(serviceID, templateID, params)
+        .then(function() {
+            btn.innerText = 'Message Sent! ✔';
+            alert('Message Sent Successfully! 🚀');
+            contactForm.reset();
+            setTimeout(() => { btn.innerText = originalText; }, 3000);
+        }, function(error) {
+            btn.innerText = 'Failed ❌';
+            alert('Failed to send message. Please try again.');
+            console.log('FAILED...', error);
+            setTimeout(() => { btn.innerText = originalText; }, 3000);
+        });
+});
