@@ -96,35 +96,67 @@ hamburger.addEventListener("click", () => {
 /* ---------------- EMAILJS INTEGRATION ---------------- */
 const contactForm = document.getElementById('contact-form');
 
-contactForm.addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent page reload
+contactForm.addEventListener('submit', async function(event) {
+    event.preventDefault(); // Always stop default form reload
 
-    // Get button to change text
     const btn = contactForm.querySelector('button');
     const originalText = btn.innerText;
+    btn.disabled = true;
     btn.innerText = 'Sending...';
 
-    // Prepare parameters matching your EmailJS template variables
-    // Ensure your EmailJS template uses {{from_name}}, {{from_email}}, and {{message}}
-    const params = {
-        from_name: document.getElementById('from_name').value,
-        email_id: document.getElementById('email_id').value,
-        message: document.getElementById('message').value
+    const name = document.getElementById('from_name').value.trim();
+    const email = document.getElementById('email_id').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    const mongoPayload = { name, email, message };
+    const emailJsPayload = {
+        from_name: name,
+        email_id: email,
+        message: message
     };
 
-    const serviceID = 'service_7nnspgf';
-    const templateID = 'template_ez4yo47';
+    console.log('[CONTACT] Submit intercepted.');
+    console.log('[CONTACT] Mongo payload:', mongoPayload);
 
-    emailjs.send(serviceID, templateID, params)
-        .then(function() {
-            btn.innerText = 'Message Sent! ✔';
-            alert('Message Sent Successfully! 🚀');
-            contactForm.reset();
-            setTimeout(() => { btn.innerText = originalText; }, 3000);
-        }, function(error) {
-            btn.innerText = 'Failed ❌';
-            alert('Failed to send message. Please try again.');
-            console.log('FAILED...', error);
-            setTimeout(() => { btn.innerText = originalText; }, 3000);
+    try {
+        const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(mongoPayload)
         });
+
+        let responseBody = null;
+        try {
+            responseBody = await response.json();
+        } catch (parseError) {
+            console.warn('[CONTACT] Backend response was not valid JSON.', parseError);
+        }
+
+        console.log('[CONTACT] Backend status:', response.status, response.statusText);
+        console.log('[CONTACT] Backend response body:', responseBody);
+
+        if (!response.ok) {
+            throw new Error(`Backend request failed with status ${response.status}`);
+        }
+
+        console.log('[CONTACT] MongoDB save succeeded. Triggering EmailJS...');
+
+        const serviceID = 'service_7nnspgf';
+        const templateID = 'template_ez4yo47';
+        const emailJsResult = await emailjs.send(serviceID, templateID, emailJsPayload);
+        console.log('[CONTACT] EmailJS success:', emailJsResult);
+
+        btn.innerText = 'Message Sent! ✔';
+        alert('Message Sent Successfully! 🚀');
+        contactForm.reset();
+    } catch (error) {
+        console.error('[CONTACT] Submit flow failed:', error);
+        btn.innerText = 'Failed ❌';
+        alert('Failed to send message. Check console logs for details.');
+    } finally {
+        btn.disabled = false;
+        setTimeout(() => { btn.innerText = originalText; }, 3000);
+    }
 });
